@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WoolTech - Natural Wool Meets Urban Tech</title>
+    <meta name="description" content="Premium wool sneakers combining natural merino wool comfort with urban technology. Sustainable, breathable, and stylish footwear for modern life.">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Animation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/splitting@1.0.6/dist/splitting.css">
+    <script src="https://unpkg.com/splitting@1.0.6/dist/splitting.min.js"></script>
+    
+    <!-- ECharts for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    
+    <style>
+        :root {
+            --warm-white: #FEFCF8;
+            --oat: #E8DCC6;
+            --mist-grey: #B8B2A7;
+            --charcoal: #4A453E;
+            --sage: #A8B5A0;
+            --warm-stone: #D4C4B0;
+            --soft-taupe: #C9B8A8;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--warm-white);
+            color: var(--charcoal);
+            background-image: url('resources/wool-texture.jpg');
+            background-size: 200px;
+            background-repeat: repeat;
+            background-blend-mode: soft-light;
+            background-opacity: 0.03;
+        }
+        
+        .hero-bg {
+            background-image: url('resources/hero-wool.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, var(--charcoal) 0%, var(--mist-grey) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .btn-primary {
+            background-color: var(--warm-stone);
+            color: var(--charcoal);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--sage);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(168, 181, 160, 0.3);
+        }
+        
+        .product-card {
+            background-color: var(--warm-white);
+            border: 1px solid var(--soft-taupe);
+            transition: all 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(74, 69, 62, 0.1);
+        }
+        
+        .size-btn {
+            background-color: var(--oat);
+            color: var(--charcoal);
+            transition: all 0.2s ease;
+        }
+        
+        .size-btn:hover {
+            background-color: var(--sage);
+            color: white;
+        }
+        
+        .size-btn.selected {
+            background-color: var(--sage);
+            color: white;
+        }
+        
+        .cart-count {
+            background-color: var(--sage);
+            color: white;
+        }
+        
+        .nav-link {
+            color: var(--charcoal);
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: var(--sage);
+        }
+        
+        .feature-icon {
+            background-color: var(--oat);
+            color: var(--charcoal);
+        }
+        
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .infinite-scroll {
+            animation: scroll 30s linear infinite;
+        }
+        
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        .typewriter {
+            border-right: 2px solid var(--sage);
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50% { border-color: transparent; }
+            51%, 100% { border-color: var(--sage); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200/50">
+        <div class="max-w-6xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-8">
+                    <h1 class="text-2xl font-bold text-gradient">WoolTech</h1>
+                    <div class="hidden md:flex space-x-6">
+                        <a href="index.html" class="nav-link font-medium">Home</a>
+                        <a href="products.html" class="nav-link font-medium">Products</a>
+                        <a href="story.html" class="nav-link font-medium">Our Story</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="cart-btn" class="relative p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.5 6M7 13l-1.5 6m0 0h9M17 13v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6"></path>
+                        </svg>
+                        <span id="cart-count" class="absolute -top-1 -right-1 cart-count text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium hidden">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-bg min-h-screen flex items-center justify-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-black/20"></div>
+        <div class="relative z-10 text-center max-w-4xl mx-auto px-6">
+            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+                <span class="block">Natural Wool</span>
+                <span class="block text-gradient typewriter" id="hero-text">Meets Urban Tech</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl mx-auto leading-relaxed">
+                Experience the perfect fusion of nature's finest merino wool and cutting-edge urban technology. 
+                Sustainable comfort for the modern explorer.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="products.html" class="btn-primary px-8 py-4 rounded-full font-semibold text-lg inline-flex items-center space-x-2">
+                    <span>Shop Collection</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                    </svg>
+                </a>
+                <a href="story.html" class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-gray-900 transition-all duration-300">
+                    Our Story
+                </a>
+            </div>
+        </div>
+        
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="py-20 px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="text-4xl md:text-5xl font-bold text-gradient mb-4">Featured Collection</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                    Discover our most popular wool sneakers, crafted with premium merino wool and innovative design.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Product 1 -->
+                <div class="product-card rounded-2xl p-6 scroll-reveal" data-delay="0">
+                    <div class="aspect-square mb-4 overflow-hidden rounded-xl">
+                        <img src="resources/product-1.jpg" alt="Urban Runner Pro" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Urban Runner Pro</h3>
+                    <p class="text-gray-600 mb-4">Premium merino wool running shoes with advanced breathability</p>
+                    <div class="mb-4">
+                        <p class="text-sm text-gray-500 mb-2">Select Size:</p>
+                        <div class="flex gap-2">
+                            <button class="size-btn px-3 py-1 rounded-lg text-sm font-medium" data-size="8">8</button>
+                            <button class="size-btn px-3 py-1 rounded-lg text-sm font-medium" data-size="9">9</button>
+                            <button class="size-btn px-3 py-1 rounded-lg text-sm font-medium" data-size="10">10</button>
+                            <button class="size-btn px-3 py-1 rounded-lg text-sm font-medium" data-size="11">11</button>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-2xl font-bold">$149</span>
+                        <button class="add-to-cart btn-primary px-6 py-2 rounded-lg font-medium" data-product="Urban Runner Pro" data-price="149">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card rounded-2xl p-6 scroll-reveal" data-delay="100">
+                    <div class="aspect-square mb-4 overflow-hidden rounded-xl">
+                        <img src="resources/product-2.jpg" alt="City Walker" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">City Walker</h3>
+                    <p class="text-gray-600 mb-4">Stylish casual sneakers perfect for urban exploration</p>
+                    <div class="mb-4">
+                        <p class="text-sm text-gray-500 mb-2">Select Size:</p>
+                        <div class="flex gap-2">
+                            <button class="size-btn px-3 py-1 rounded-lg text-sm font-medium" data-size="8">8</button>
+                            <button class="size-btn px-3 py-1 rounded-lg text-sm font-medium" data-size="9">9</button>
+                            <button class="size-btn px-3 py-1 rounded-lg text-sm font-medium" data-size="10">10</button>
+                            <button class="size-btn px-3 py-1 rounded-lg text-sm font-medium" data-size="11">11</button>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-2xl font-bold">$129</span>
+                        <button class="add-to-cart btn-primary px-6 py-2 rounded-lg font-medium" data-product="City Walker" data-price="129">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card rounded-2xl p-6 scroll-reveal" data-delay="200">
+                    <div class="aspect-square mb-4 overflow-hidden rounded-xl">
+                        <img src="resources/product-3.jpg" alt="Trail Blazer" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Trail Blazer</h3>
+                    <p class="text-gray-600 mb-4">Rugged hiking shoes with natural wool insulation</p>
+                    <div class="mb-4">
+                        <p class="text-sm text-gray-500 mb-2">Select Size:</p>
+                        <div class="flex gap-2">
+                            <button class="size-btn px-3 py-1 rounded-lg text-sm font-medium" data-size="8">8</button>
+                            <button class="size-btn px-3 py-1 rounded-lg text-sm font-medium" data-size="9">9</button>
+                            <button class="size-btn px-3 py-1 rounded-lg text-sm font-medium" data-size="10">10</button>
+                            <button class="size-btn px-3 py-1 rounded-lg text-sm font-medium" data-size="11">11</button>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-2xl font-bold">$169</span>
+                        <button class="add-to-cart btn-primary px-6 py-2 rounded-lg font-medium" data-product="Trail Blazer" data-price="169">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card rounded-2xl p-6 scroll-reveal" data-delay="300">
+                    <div class="aspect-square mb-4 overflow-hidden rounded-xl">
+                        <img src="resources/product-5.jpg" alt="Lifestyle Classic" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Lifestyle Classic</h3>
+                    <p class="text-gray-600 mb-4">Timeless design meets modern wool technology</p>
+                    <div class="mb-4">
+                        <p class="text-sm text-gray-500 mb-2">Select Size:</p>
+                        <div class="flex gap-2">
+                            <button class="size-btn px-3 py-1 rounded-lg text-sm font-medium" data-size="8">8</button>
+                            <button class="size-btn px-3 py-1 rounded-lg text-sm font-medium" data-size="9">9</button>
+                            <button class="size-btn px-3 py-1 rounded-lg text-sm font-medium" data-size="10">10</button>
+                            <button class="size-btn px-3 py-1 rounded-lg text-sm font-medium" data-size="11">11</button>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-2xl font-bold">$139</span>
+                        <button class="add-to-cart btn-primary px-6 py-2 rounded-lg font-medium" data-product="Lifestyle Classic" data-price="139">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 5 -->
+                <div class="product-card rounded-2xl p-6 scroll-reveal" data-delay="400">
+                    <div class="aspect-square mb-4 overflow-hidden rounded-xl">
+                        <img src="resources/product-6.jpg" alt="Speed Racer" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Speed Racer</h3>
+                    <p class="text-gray-600 mb-4">High-performance running shoes with wool ventilation</p>
+                    <div class="mb-4">
+                        <p class="text-sm text-gray-500 mb-2">Select Size:</p>
+                        <div class="flex gap-2">
+                            <button class="size-btn px-3 py-1 rounded-lg text-sm font-medium" data-size="8">8</button>
+                            <button class="size-btn px-3 py-1 rounded-lg text-sm font-medium" data-size="9">9</button>
+                            <button class="size-btn px-3 py-1 rounded-lg text-sm font-medium" data-size="10">10</button>
+                            <button class="size-btn px-3 py-1 rounded-lg text-sm font-medium" data-size="11">11</button>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-2xl font-bold">$159</span>
+                        <button class="add-to-cart btn-primary px-6 py-2 rounded-lg font-medium" data-product="Speed Racer" data-price="159">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 6 -->
+                <div class="product-card rounded-2xl p-6 scroll-reveal" data-delay="500">
+                    <div class="aspect-square mb-4 overflow-hidden rounded-xl">
+                        <img src="resources/product-7.jpg" alt="Weekend Wanderer" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Weekend Wanderer</h3>
+                    <p class="text-gray-600 mb-4">Comfortable casual shoes for everyday adventures</p>
+                    <div class="mb-4">
+                        <p class="text-sm text-gray-500 mb-2">Select Size:</p>
+                        <div class="flex gap-2">
+                            <button class="size-btn px-3 py-1 rounded-lg text-sm font-medium" data-size="8">8</button>
+                            <button class="size-btn px-3 py-1 rounded-lg text-sm font-medium" data-size="9">9</button>
+                            <button class="size-btn px-3 py-1 rounded-lg text-sm font-medium" data-size="10">10</button>
+                            <button class="size-btn px-3 py-1 rounded-lg text-sm font-medium" data-size="11">11</button>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-2xl font-bold">$119</span>
+                        <button class="add-to-cart btn-primary px-6 py-2 rounded-lg font-medium" data-product="Weekend Wanderer" data-price="119">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12 scroll-reveal">
+                <a href="products.html" class="btn-primary px-8 py-4 rounded-full font-semibold text-lg inline-flex items-center space-x-2">
+                    <span>View All Products</span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brand Promise -->
+    <section class="py-20 px-6 bg-gradient-to-br from-gray-50 to-white">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16 scroll-reveal">
+                <h2 class="text-4xl md:text-5xl font-bold text-gradient mb-4">Why Choose WoolTech</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                    Our merino wool sneakers combine natural performance with modern design for the ultimate comfort experience.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div class="text-center scroll-reveal" data-delay="0">
+                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Temperature Regulating</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Merino wool naturally regulates temperature, keeping your feet cool in summer and warm in winter. 
+                        Perfect for any season or activity.
+                    </p>
+                </div>
+                
+                <div class="text-center scroll-reveal" data-delay="200">
+                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Moisture Wicking</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Advanced moisture management pulls sweat away from your skin, keeping feet dry and comfortable 
+                        even during intense activities.
+                    </p>
+                </div>
+                
+                <div class="text-center scroll-reveal" data-delay="400">
+                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Odor Resistant</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Natural antimicrobial properties prevent odor-causing bacteria, keeping your shoes fresh 
+                        longer without harsh chemicals.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Infinite Image Scroller -->
+    <section class="py-20 overflow-hidden">
+        <div class="mb-12 text-center scroll-reveal">
+            <h2 class="text-3xl md:text-4xl font-bold text-gradient mb-4">Lifestyle Gallery</h2>
+            <p class="text-lg text-gray-600">See how WoolTech fits into your daily life</p>
+        </div>
+        
+        <div class="flex infinite-scroll">
+            <div class="flex space-x-6 min-w-max">
+                <img src="resources/product-8.jpg" alt="Lifestyle 1" class="w-64 h-48 object-cover rounded-xl">
+                <img src="resources/product-9.jpg" alt="Lifestyle 2" class="w-64 h-48 object-cover rounded-xl">
+                <img src="resources/product-10.jpg" alt="Lifestyle 3" class="w-64 h-48 object-cover rounded-xl">
+                <img src="resources/product-11.jpg" alt="Lifestyle 4" class="w-64 h-48 object-cover rounded-xl">
+                <img src="resources/product-12.jpg" alt="Lifestyle 5" class="w-64 h-48 object-cover rounded-xl">
+                <!-- Duplicate for seamless loop -->
+                <img src="resources/product-8.jpg" alt="Lifestyle 1" class="w-64 h-48 object-cover rounded-xl">
+                <img src="resources/product-9.jpg" alt="Lifestyle 2" class="w-64 h-48 object-cover rounded-xl">
+                <img src="resources/product-10.jpg" alt="Lifestyle 3" class="w-64 h-48 object-cover rounded-xl">
+                <img src="resources/product-11.jpg" alt="Lifestyle 4" class="w-64 h-48 object-cover rounded-xl">
+                <img src="resources/product-12.jpg" alt="Lifestyle 5" class="w-64 h-48 object-cover rounded-xl">
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 px-6">
+        <div class="max-w-6xl mx-auto text-center">
+            <div class="mb-8">
+                <h3 class="text-2xl font-bold text-gradient mb-4">WoolTech</h3>
+                <p class="text-gray-400 max-w-md mx-auto">
+                    Natural wool meets urban technology. Sustainable comfort for modern life.
+                </p>
+            </div>
+            <div class="border-t border-gray-800 pt-8">
+                <p class="text-gray-400">
+                    © 2024 WoolTech. All rights reserved. Crafted with natural merino wool and innovative design.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Shopping Cart Sidebar -->
+    <div id="cart-sidebar" class="fixed right-0 top-0 h-full w-96 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-50">
+        <div class="p-6 border-b">
+            <div class="flex items-center justify-between">
+                <h3 class="text-xl font-semibold">Shopping Cart</h3>
+                <button id="close-cart" class="p-2 hover:bg-gray-100 rounded-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <div id="cart-items" class="flex-1 overflow-y-auto p-6">
+            <div class="text-center text-gray-500 py-12">
+                <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.5 6M7 13l-1.5 6m0 0h9M17 13v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6"></path>
+                </svg>
+                <p>Your cart is empty</p>
+            </div>
+        </div>
+        
+        <div id="cart-footer" class="p-6 border-t bg-gray-50">
+            <div class="flex items-center justify-between mb-4">
+                <span class="text-lg font-semibold">Total:</span>
+                <span id="cart-total" class="text-xl font-bold">$0</span>
+            </div>
+            <button id="checkout-btn" class="w-full btn-primary py-3 rounded-lg font-semibold disabled:opacity-50" disabled>
+                Checkout
+            </button>
+        </div>
+    </div>
+
+    <!-- Cart Backdrop -->
+    <div id="cart-backdrop" class="fixed inset-0 bg-black/50 z-40 hidden"></div>
+
+    <script src="main.js"></script>
+</body>
+</html>

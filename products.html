@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - WoolTech Sneakers</title>
+    <meta name="description" content="Browse our complete collection of premium wool sneakers. Filter by category, size, and price to find your perfect pair.">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Animation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    
+    <style>
+        :root {
+            --warm-white: #FEFCF8;
+            --oat: #E8DCC6;
+            --mist-grey: #B8B2A7;
+            --charcoal: #4A453E;
+            --sage: #A8B5A0;
+            --warm-stone: #D4C4B0;
+            --soft-taupe: #C9B8A8;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--warm-white);
+            color: var(--charcoal);
+            background-image: url('resources/wool-texture.jpg');
+            background-size: 200px;
+            background-repeat: repeat;
+            background-blend-mode: soft-light;
+            background-opacity: 0.03;
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, var(--charcoal) 0%, var(--mist-grey) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .btn-primary {
+            background-color: var(--warm-stone);
+            color: var(--charcoal);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--sage);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(168, 181, 160, 0.3);
+        }
+        
+        .product-card {
+            background-color: var(--warm-white);
+            border: 1px solid var(--soft-taupe);
+            transition: all 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(74, 69, 62, 0.1);
+        }
+        
+        .filter-btn {
+            background-color: var(--oat);
+            color: var(--charcoal);
+            transition: all 0.2s ease;
+        }
+        
+        .filter-btn:hover {
+            background-color: var(--sage);
+            color: white;
+        }
+        
+        .filter-btn.active {
+            background-color: var(--sage);
+            color: white;
+        }
+        
+        .size-btn {
+            background-color: var(--oat);
+            color: var(--charcoal);
+            transition: all 0.2s ease;
+        }
+        
+        .size-btn:hover {
+            background-color: var(--sage);
+            color: white;
+        }
+        
+        .size-btn.selected {
+            background-color: var(--sage);
+            color: white;
+        }
+        
+        .cart-count {
+            background-color: var(--sage);
+            color: white;
+        }
+        
+        .nav-link {
+            color: var(--charcoal);
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: var(--sage);
+        }
+        
+        .price-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            height: 6px;
+            background: var(--oat);
+            border-radius: 3px;
+            outline: none;
+        }
+        
+        .price-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--sage);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .price-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: var(--sage);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .color-swatch {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .color-swatch:hover {
+            border-color: var(--sage);
+            transform: scale(1.1);
+        }
+        
+        .color-swatch.selected {
+            border-color: var(--sage);
+            box-shadow: 0 0 0 2px var(--sage);
+        }
+        
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+        
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200/50">
+        <div class="max-w-6xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-8">
+                    <h1 class="text-2xl font-bold text-gradient">WoolTech</h1>
+                    <div class="hidden md:flex space-x-6">
+                        <a href="index.html" class="nav-link font-medium">Home</a>
+                        <a href="products.html" class="nav-link font-medium text-sage">Products</a>
+                        <a href="story.html" class="nav-link font-medium">Our Story</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="cart-btn" class="relative p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.5 6M7 13l-1.5 6m0 0h9M17 13v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6"></path>
+                        </svg>
+                        <span id="cart-count" class="absolute -top-1 -right-1 cart-count text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium hidden">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="pt-24 pb-12 px-6">
+        <div class="max-w-6xl mx-auto text-center">
+            <h1 class="text-4xl md:text-6xl font-bold text-gradient mb-4">Our Collection</h1>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                Discover our complete range of premium wool sneakers, designed for comfort, style, and sustainability.
+            </p>
+        </div>
+    </section>
+
+    <!-- Filters -->
+    <section class="py-8 px-6 bg-white/50 backdrop-blur-sm border-b border-gray-200/50 sticky top-20 z-40">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex flex-wrap gap-4 items-center justify-between mb-6">
+                <div class="flex flex-wrap gap-3">
+                    <!-- Category Filters -->
+                    <div class="flex flex-wrap gap-2">
+                        <button class="filter-btn active px-4 py-2 rounded-full font-medium text-sm" data-filter="all">All</button>
+                        <button class="filter-btn px-4 py-2 rounded-full font-medium text-sm" data-filter="running">Running</button>
+                        <button class="filter-btn px-4 py-2 rounded-full font-medium text-sm" data-filter="casual">Casual</button>
+                        <button class="filter-btn px-4 py-2 rounded-full font-medium text-sm" data-filter="lifestyle">Lifestyle</button>
+                        <button class="filter-btn px-4 py-2 rounded-full font-medium text-sm" data-filter="hiking">Hiking</button>
+                    </div>
+                </div>
+                
+                <button id="clear-filters" class="text-sm text-gray-500 hover:text-sage transition-colors">
+                    Clear All Filters
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Size Filter -->
+                <div>
+                    <label class="block text-sm font-medium mb-3">Size</label>
+                    <div class="flex flex-wrap gap-2">
+                        <button class="size-filter size-btn px-3 py-1 rounded-lg text-sm font-medium" data-size="7">7</button>
+                        <button class="size-filter size-btn px-3 py-1 rounded-lg text-sm font-medium" data-size="8">8</button>
+                        <button class="size-filter size-btn px-3 py-1 rounded-lg text-sm font-medium" data-size="9">9</button>
+                        <button class="size-filter size-btn px-3 py-1 rounded-lg text-sm font-medium" data-size="10">10</button>
+                        <button class="size-filter size-btn px-3 py-1 rounded-lg text-sm font-medium" data-size="11">11</button>
+                        <button class="size-filter size-btn px-3 py-1 rounded-lg text-sm font-medium" data-size="12">12</button>
+                    </div>
+                </div>
+                
+                <!-- Price Range -->
+                <div>
+                    <label class="block text-sm font-medium mb-3">Price Range</label>
+                    <div class="flex items-center space-x-4">
+                        <span class="text-sm text-gray-500">$100</span>
+                        <input type="range" id="price-slider" class="price-slider flex-1" min="100" max="200" value="200">
+                        <span class="text-sm text-gray-500">$200+</span>
+                    </div>
+                    <div class="text-center mt-2">
+                        <span class="text-sm font-medium">Up to $<span id="price-value">200</span></span>
+                    </div>
+                </div>
+                
+                <!-- Color Filter -->
+                <div>
+                    <label class="block text-sm font-medium mb-3">Color</label>
+                    <div class="flex flex-wrap gap-2">
+                        <div class="color-swatch" style="background-color: #000000" data-color="black"></div>
+                        <div class="color-swatch" style="background-color: #FFFFFF; border: 1px solid #ddd" data-color="white"></div>
+                        <div class="color-swatch" style="background-color: #8B7355" data-color="brown"></div>
+                        <div class="color-swatch" style="background-color: #4A5568" data-color="gray"></div>
+                        <div class="color-swatch" style="background-color: #2D5016" data-color="green"></div>
+                        <div class="color-swatch" style="background-color: #1E3A8A" data-color="blue"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Grid -->
+    <section class="py-12 px-6">
+        <div class="max-w-6xl mx-auto">
+            <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Products will be dynamically loaded here -->
+            </div>
+            
+            <div id="no-results" class="text-center py-12 hidden">
+                <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.881-6.08-2.33"></path>
+                </svg>
+                <h3 class="text-xl font-semibold text-gray-600 mb-2">No products found</h3>
+                <p class="text-gray-500">Try adjusting your filters to see more results.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shopping Cart Sidebar -->
+    <div id="cart-sidebar" class="fixed right-0 top-0 h-full w-96 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-50">
+        <div class="p-6 border-b">
+            <div class="flex items-center justify-between">
+                <h3 class="text-xl font-semibold">Shopping Cart</h3>
+                <button id="close-cart" class="p-2 hover:bg-gray-100 rounded-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <div id="cart-items" class="flex-1 overflow-y-auto p-6">
+            <div class="text-center text-gray-500 py-12">
+                <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.5 6M7 13l-1.5 6m0 0h9M17 13v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6"></path>
+                </svg>
+                <p>Your cart is empty</p>
+            </div>
+        </div>
+        
+        <div id="cart-footer" class="p-6 border-t bg-gray-50">
+            <div class="flex items-center justify-between mb-4">
+                <span class="text-lg font-semibold">Total:</span>
+                <span id="cart-total" class="text-xl font-bold">$0</span>
+            </div>
+            <button id="checkout-btn" class="w-full btn-primary py-3 rounded-lg font-semibold disabled:opacity-50" disabled>
+                Checkout
+            </button>
+        </div>
+    </div>
+
+    <!-- Cart Backdrop -->
+    <div id="cart-backdrop" class="fixed inset-0 bg-black/50 z-40 hidden"></div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 px-6">
+        <div class="max-w-6xl mx-auto text-center">
+            <div class="mb-8">
+                <h3 class="text-2xl font-bold text-gradient mb-4">WoolTech</h3>
+                <p class="text-gray-400 max-w-md mx-auto">
+                    Natural wool meets urban technology. Sustainable comfort for modern life.
+                </p>
+            </div>
+            <div class="border-t border-gray-800 pt-8">
+                <p class="text-gray-400">
+                    © 2024 WoolTech. All rights reserved. Crafted with natural merino wool and innovative design.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>
